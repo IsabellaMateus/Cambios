@@ -20,6 +20,8 @@
         {
             //bool load; /*variável para controlar se o load das taxas já foi feito*/
 
+            ProgressBar1.Value = 0;
+
             var client = new HttpClient(); /*Conexão externa via HTTP*/
             client.BaseAddress = new Uri("http://cambios.somee.com"); /*Endereço base da API*/
 
@@ -33,9 +35,21 @@
                 return;
             }
 
-            var rates = JsonConvert.DeserializeObject<List<Rate>>(result);
+            // Converte o resultado numa lista de objectos do tipo 'Rate'
+            var rates = JsonConvert.DeserializeObject<List<Rate>>(result); 
 
             ComboBoxOrigem.DataSource = rates;
+            ComboBoxOrigem.DisplayMember = "Name";
+
+            //Corrige bug da microsoft
+            // Para que possa alterar a taxa de uma ComboBox sem que altere na outra ComboBox
+            // BindingContext - Classe que liga os objetos do interface ao código
+            ComboBoxDestino.BindingContext = new BindingContext(); 
+
+            ComboBoxDestino.DataSource = rates;
+            ComboBoxDestino.DisplayMember = "Name";
+
+            ProgressBar1.Value = 100;
         }
     }
 }
