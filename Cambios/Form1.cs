@@ -2,6 +2,7 @@
 {
     using Modelos;
     using Modelos.Servicos;
+    using Servicos;
     using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
@@ -14,6 +15,7 @@
         private ApiService apiService;
         private List<Rate> Rates;
         private DialogService dialogService;
+        private DataService dataService;
         #endregion
 
         public Form1()
@@ -22,6 +24,7 @@
             netWorkService = new NetWorkService();
             apiService = new ApiService();
             dialogService = new DialogService();
+            dataService = new DataService();
             LoadRates(); /*cria as taxas*/
         }
 
@@ -52,6 +55,9 @@
                 LabelResultado.Text = "Não há ligação à internet" + Environment.NewLine +
                     "e não foram carregadas previamente as taxas." + Environment.NewLine +
                     "Tente mais tarde!";
+
+                LabelStatus.Text = "Primeira inicialização deverá ter ligação à Internet!";
+
                 return;
             }
 
@@ -83,7 +89,7 @@
 
         private void LoadLocalRates()
         {
-            MessageBox.Show("Não está implementado");
+            Rates = dataService.GetData();
         }
 
         private async Task LoadApiRates()
@@ -93,12 +99,17 @@
             //Parametros de entrada: endereço base da API e seu controlador
             var response = await apiService.getRates("http://cambios.somee.com", "/api/rates");
 
+            //Vou buscar a lista de taxas e guardo-as na base de dados
             Rates = (List<Rate>)response.Result;
+
+            //Apaga dados antigos da base de dados e coloca os novos dados
+            dataService.DeleteData();
+            dataService.SaveData(Rates);
         }
 
         private void ButtonConverter_Click(object sender, EventArgs e)
         {
-            Converter(); /*método que agarra nos valores e faz a conversão*/ 
+            Converter(); /*método que agarra nos valores e faz a conversão*/
         }
 
         private void Converter()
@@ -106,7 +117,7 @@
             //Validação da TextBox
             if (string.IsNullOrEmpty(TextBoxValor.Text))
             {
-                dialogService.ShowMessage("Erro","Insira um valor a converter!");
+                dialogService.ShowMessage("Erro", "Insira um valor a converter!");
                 return;
             }
 
@@ -131,12 +142,12 @@
                 return;
             }
 
-            var taxaOrigem = (Rate) ComboBoxOrigem.SelectedItem;
-            var taxaDestino = (Rate) ComboBoxDestino.SelectedItem;
+            var taxaOrigem = (Rate)ComboBoxOrigem.SelectedItem;
+            var taxaDestino = (Rate)ComboBoxDestino.SelectedItem;
 
             var valorConvertido = valor / (decimal)taxaOrigem.TaxRate * (decimal)taxaDestino.TaxRate;
 
-            LabelResultado.Text = string.Format("{0} {1:C2} = {2} {3:C2}", 
+            LabelResultado.Text = string.Format("{0} {1:C2} = {2} {3:C2}",
                 taxaOrigem.Code, valor, taxaDestino.Code, valorConvertido);
         }
 
