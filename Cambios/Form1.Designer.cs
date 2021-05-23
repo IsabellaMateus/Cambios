@@ -29,6 +29,7 @@ namespace Cambios
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.label1 = new System.Windows.Forms.Label();
             this.TextBoxValor = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
@@ -39,6 +40,7 @@ namespace Cambios
             this.LabelResultado = new System.Windows.Forms.Label();
             this.LabelStatus = new System.Windows.Forms.Label();
             this.ProgressBar1 = new System.Windows.Forms.ProgressBar();
+            this.ButtonTrocar = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label1
@@ -96,6 +98,7 @@ namespace Cambios
             // 
             // ButtonConverter
             // 
+            this.ButtonConverter.Enabled = false;
             this.ButtonConverter.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.ButtonConverter.Location = new System.Drawing.Point(638, 63);
             this.ButtonConverter.Name = "ButtonConverter";
@@ -103,6 +106,7 @@ namespace Cambios
             this.ButtonConverter.TabIndex = 6;
             this.ButtonConverter.Text = "Converter";
             this.ButtonConverter.UseVisualStyleBackColor = true;
+            this.ButtonConverter.Click += new System.EventHandler(this.ButtonConverter_Click);
             // 
             // LabelResultado
             // 
@@ -130,11 +134,24 @@ namespace Cambios
             this.ProgressBar1.Size = new System.Drawing.Size(164, 29);
             this.ProgressBar1.TabIndex = 9;
             // 
+            // ButtonTrocar
+            // 
+            this.ButtonTrocar.Enabled = false;
+            this.ButtonTrocar.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.ButtonTrocar.Image = ((System.Drawing.Image)(resources.GetObject("ButtonTrocar.Image")));
+            this.ButtonTrocar.Location = new System.Drawing.Point(680, 142);
+            this.ButtonTrocar.Name = "ButtonTrocar";
+            this.ButtonTrocar.Size = new System.Drawing.Size(48, 54);
+            this.ButtonTrocar.TabIndex = 10;
+            this.ButtonTrocar.UseVisualStyleBackColor = true;
+            this.ButtonTrocar.Click += new System.EventHandler(this.ButtonTrocar_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 411);
+            this.Controls.Add(this.ButtonTrocar);
             this.Controls.Add(this.ProgressBar1);
             this.Controls.Add(this.LabelStatus);
             this.Controls.Add(this.LabelResultado);
@@ -165,6 +182,7 @@ namespace Cambios
         private System.Windows.Forms.Label LabelResultado;
         private System.Windows.Forms.Label LabelStatus;
         private System.Windows.Forms.ProgressBar ProgressBar1;
+        private System.Windows.Forms.Button ButtonTrocar;
     }
 }
 
